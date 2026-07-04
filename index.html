@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>สั่งตัดโลโก้โฟมงานแต่ง & อีเวนต์ | Foam Logo Order</title>
+  <!-- Google Fonts: Prompt & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #201328 0%, #0d0813 100%);
+      --card-bg: rgba(26, 17, 34, 0.75);
+      --border-color: rgba(212, 175, 55, 0.18);
+      --border-focus: rgba(229, 193, 88, 0.6);
+      --text-main: #f3f0f7;
+      --text-muted: #bdaec6;
+      --primary-gradient: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%);
+      --primary-hover: linear-gradient(135deg, #e5c158 0%, #c59b27 100%);
+      --accent-color: #e5c158;
+      --danger-color: #ef4444;
+      --success-color: #10b981;
+      --shadow-glow: 0 8px 32px 0 rgba(170, 124, 17, 0.15);
+      --font-family: 'Prompt', 'Outfit', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 1rem;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Glowing Orbs */
+    .orb-1 {
+      position: absolute;
+      top: -200px;
+      left: -200px;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, rgba(0,0,0,0) 70%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .orb-2 {
+      position: absolute;
+      bottom: -200px;
+      right: -200px;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(155, 107, 158, 0.1) 0%, rgba(0,0,0,0) 70%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 680px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: var(--shadow-glow), 0 20px 40px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .logo-container {
+      margin-bottom: 1rem;
+      display: inline-block;
+      position: relative;
+    }
+
+    .logo-icon {
+      font-size: 3rem;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.3));
+      animation: pulse 3s infinite ease-in-out;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(180deg, #ffffff 0%, #e2d9eb 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 300;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 576px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .container {
+        padding: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 0;
+      }
+      .container {
+        border-radius: 0;
+        border: none;
+        padding: 1.25rem 1rem;
+        box-shadow: none;
+      }
+      h1 {
+        font-size: 1.6rem;
+      }
+      .logo-icon {
+        font-size: 2.5rem;
+      }
+      .upload-zone {
+        padding: 1.5rem 1rem;
+      }
+      button.btn-submit {
+        padding: 0.85rem;
+        font-size: 1rem;
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--accent-color);
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    label span.required {
+      color: var(--danger-color);
+    }
+
+    input[type="text"],
+    input[type="date"],
+    textarea,
+    select {
+      background: rgba(20, 12, 28, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 0.85rem 1rem;
+      color: var(--text-main);
+      font-family: var(--font-family);
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
+    }
+
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 12px rgba(229, 193, 88, 0.2);
+      background: rgba(28, 17, 38, 0.8);
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(189, 174, 198, 0.4);
+    }
+
+    /* Datepicker styling customization */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(0.85) sepia(50%) saturate(1000%) hue-rotate(340deg);
+      cursor: pointer;
+    }
+
+    /* Upload Area */
+    .upload-zone {
+      border: 2px dashed var(--border-color);
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      background: rgba(20, 12, 28, 0.4);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .upload-zone:hover,
+    .upload-zone.dragover {
+      border-color: var(--border-focus);
+      background: rgba(212, 175, 55, 0.05);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.08);
+    }
+
+    .upload-icon {
+      font-size: 2.5rem;
+      color: var(--accent-color);
+      opacity: 0.8;
+      transition: transform 0.25s ease;
+    }
+
+    .upload-zone:hover .upload-icon {
+      transform: translateY(-4px);
+    }
+
+    .upload-text {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .upload-text strong {
+      color: var(--accent-color);
+    }
+
+    .upload-limit {
+      font-size: 0.75rem;
+      color: rgba(189, 174, 198, 0.6);
+    }
+
+    #file-input {
+      display: none;
+    }
+
+    /* File Preview List */
+    .preview-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .preview-card {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .preview-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .preview-remove {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: rgba(239, 68, 68, 0.85);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .preview-remove:hover {
+      background: rgba(220, 38, 38, 1);
+    }
+
+    /* Button */
+    button.btn-submit {
+      background: var(--primary-gradient);
+      color: #1a0f02;
+      border: none;
+      border-radius: 12px;
+      padding: 1rem;
+      font-family: var(--font-family);
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 15px rgba(170, 124, 17, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    button.btn-submit:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(170, 124, 17, 0.45);
+    }
+
+    button.btn-submit:active {
+      transform: translateY(0);
+    }
+
+    button.btn-submit:disabled {
+      background: rgba(189, 174, 198, 0.2);
+      color: rgba(189, 174, 198, 0.4);
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .spinner {
+      border: 3px solid rgba(26, 15, 2, 0.2);
+      border-top: 3px solid #1a0f02;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      animation: spin 0.8s linear infinite;
+      display: none;
+    }
+
+    /* Success / Overlay Screen */
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 10, 20, 0.95);
+      border-radius: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      z-index: 10;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .success-icon {
+      font-size: 4.5rem;
+      color: var(--accent-color);
+      margin-bottom: 1.5rem;
+      animation: scaleUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .success-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: #ffffff;
+    }
+
+    .success-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 2rem;
+      max-width: 400px;
+    }
+
+    .btn-new-order {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: var(--font-family);
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .btn-new-order:hover {
+      background: rgba(212, 175, 55, 0.1);
+      border-color: var(--accent-color);
+      color: var(--accent-color);
+    }
+
+    /* Animations */
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); filter: brightness(1) drop-shadow(0 2px 8px rgba(212, 175, 55, 0.3)); }
+      50% { transform: scale(1.05); filter: brightness(1.2) drop-shadow(0 4px 15px rgba(212, 175, 55, 0.5)); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes scaleUp {
+      from { transform: scale(0); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="orb-1"></div>
+  <div class="orb-2"></div>
+
+  <div class="container">
+    
+    <!-- Success Overlay -->
+    <div class="overlay" id="success-overlay">
+      <div class="success-icon">✨</div>
+      <div class="success-title">ส่งใบสั่งตัดสำเร็จ!</div>
+      <div class="success-desc">
+        ระบบบันทึกข้อมูลของคุณเรียบร้อยแล้ว และระบบ LINE Bot ได้ทำการแจ้งเตือนไปยังพนักงานเพื่อดำเนินงานในขั้นตอนถัดไป
+      </div>
+      <button class="btn-new-order" onclick="resetForm()">สั่งตัดชิ้นงานใหม่</button>
+    </div>
+
+    <!-- Main Header -->
+    <header>
+      <div class="logo-container">
+        <div class="logo-icon">👑</div>
+      </div>
+      <h1>ระบบสั่งตัดโลโก้โฟม</h1>
+      <p class="subtitle">สั่งทําโลโก้โฟมลวดลายพิเศษ สําหรับใช้ในงานแต่งงานและอีเวนต์ต่างๆ</p>
+    </header>
+
+    <!-- Order Form -->
+    <form id="order-form" onsubmit="submitForm(event)">
+      
+      <!-- Customer Name -->
+      <div class="form-group">
+        <label for="customer-name">
+          <span>👤 ชื่อผู้สั่งตัด</span> <span class="required">*</span>
+        </label>
+        <input type="text" id="customer-name" placeholder="ระบุชื่อ-นามสกุล หรือชื่อร้านของคุณ" required>
+      </div>
+
+      <!-- Wedding Names Row -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="groom-name">
+            <span>🤵 ชื่อเจ้าบ่าว</span>
+          </label>
+          <input type="text" id="groom-name" placeholder="พิมพ์ชื่อภาษาไทย/อังกฤษ (ถ้ามี)">
+        </div>
+        <div class="form-group">
+          <label for="bride-name">
+            <span>👰 ชื่อเจ้าสาว</span>
+          </label>
+          <input type="text" id="bride-name" placeholder="พิมพ์ชื่อภาษาไทย/อังกฤษ (ถ้ามี)">
+        </div>
+      </div>
+
+      <!-- Date, Size, Color Row -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="required-date">
+            <span>📅 วันที่ต้องการใช้</span> <span class="required">*</span>
+          </label>
+          <input type="date" id="required-date" required>
+        </div>
+        <div class="form-group">
+          <label for="size">
+            <span>📐 ขนาดที่ต้องการ (ซม.)</span> <span class="required">*</span>
+          </label>
+          <input type="text" id="size" placeholder="เช่น 120 x 80 ซม. หรือ กว้าง 1.5 เมตร" required>
+        </div>
+      </div>
+
+      <!-- Color and Notes -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="color">
+            <span>🎨 สีที่ต้องการ</span> <span class="required">*</span>
+          </label>
+          <select id="color" required>
+            <option value="" disabled selected>เลือกสีที่ต้องการ...</option>
+            <option value="สีทองกากเพชร">สีทองกากเพชร (ยอดนิยม)</option>
+            <option value="สีเงินกากเพชร">สีเงินกากเพชร</option>
+            <option value="สีชมพูพาสเทล">สีชมพูพาสเทล</option>
+            <option value="สีขาวโฟมธรรมชาติ">สีขาวโฟมธรรมชาติ</option>
+            <option value="สีแดง">สีแดง</option>
+            <option value="สีน้ำเงิน">สีน้ำเงิน</option>
+            <option value="ระบุสีเพิ่มเติมในรายละเอียด">อื่นๆ (ระบุเพิ่มเติมในช่องหมายเหตุ)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="notes">
+            <span>📝 รายละเอียด / หมายเหตุเพิ่มเติม</span>
+          </label>
+          <input type="text" id="notes" placeholder="เช่น ความหนา 1.5 นิ้ว, เปลี่ยนฟอนต์คำว่า..." style="height: 100%;">
+        </div>
+      </div>
+
+      <!-- Image Upload Area -->
+      <div class="form-group">
+        <label>
+          <span>📸 รูปภาพตัวอย่างแบบ หรือรูปอ้างอิง</span> <span class="required">*</span>
+        </label>
+        <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()">
+          <div class="upload-icon">📤</div>
+          <div class="upload-text">คลิกเพื่ออัปโหลด หรือลากไฟล์มาวางที่นี่</div>
+          <div class="upload-limit">รองรับไฟล์ JPG, PNG (สามารถเลือกได้มากกว่า 1 รูป)</div>
+        </div>
+        <input type="file" id="file-input" accept="image/*" multiple onchange="handleFileSelect(event)">
+        <div class="preview-container" id="preview-container"></div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn-submit" id="btn-submit">
+        <span class="spinner" id="btn-spinner"></span>
+        <span id="btn-text">ส่งข้อมูลสั่งตัด</span>
+      </button>
+
+    </form>
+
+  </div>
+
+  <script>
+    // Paste your Google Sheets Web App URL here
+    const GOOGLE_SHEET_URL = "YOUR_GOOGLE_SHEET_WEB_APP_URL_HERE";
+
+    // State to store uploaded files as base64
+    let uploadedImages = [];
+
+    // Drag and Drop Logic
+    const uploadZone = document.getElementById('upload-zone');
+    
+    ['dragenter', 'dragover'].forEach(eventName => {
+      uploadZone.addEventListener(eventName, e => {
+        e.preventDefault();
+        uploadZone.classList.add('dragover');
+      }, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      uploadZone.addEventListener(eventName, e => {
+        e.preventDefault();
+        uploadZone.classList.remove('dragover');
+      }, false);
+    });
+
+    uploadZone.addEventListener('drop', e => {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      processFiles(files);
+    });
+
+    function handleFileSelect(e) {
+      const files = e.target.files;
+      processFiles(files);
+    }
+
+    function processFiles(files) {
+      Array.from(files).forEach(file => {
+        if (!file.type.startsWith('image/')) {
+          alert('กรุณาอัปโหลดไฟล์รูปภาพเท่านั้น');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          uploadedImages.push({
+            filename: file.name,
+            data: reader.result // Base64 string
+          });
+          renderPreviews();
+        };
+      });
+    }
+
+    function renderPreviews() {
+      const container = document.getElementById('preview-container');
+      container.innerHTML = '';
+      
+      uploadedImages.forEach((img, index) => {
+        const card = document.createElement('div');
+        card.className = 'preview-card';
+        
+        const elImage = document.createElement('img');
+        elImage.src = img.data;
+        card.appendChild(elImage);
+        
+        const btnRemove = document.createElement('button');
+        btnRemove.type = 'button';
+        btnRemove.className = 'preview-remove';
+        btnRemove.innerHTML = '✕';
+        btnRemove.onclick = (e) => {
+          e.stopPropagation();
+          uploadedImages.splice(index, 1);
+          renderPreviews();
+        };
+        card.appendChild(btnRemove);
+        
+        container.appendChild(card);
+      });
+    }
+
+    // Submit Order Form
+    async function submitForm(e) {
+      e.preventDefault();
+      
+      if (uploadedImages.length === 0) {
+        alert('กรุณาอัปโหลดรูปภาพแบบสั่งตัดอย่างน้อย 1 รูป');
+        return;
+      }
+
+      // Alert to verify correctness
+      if (!confirm('กรุณาตรวจสอบความถูกต้องของข้อมูลทั้งหมดก่อนส่งคำสั่งตัดโฟม\n\nกดยืนยันเพื่อดำเนินการส่งข้อมูล?')) {
+        return;
+      }
+
+      if (!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL.includes("YOUR_GOOGLE_SHEET_WEB_APP_URL")) {
+        alert('กรุณาตั้งค่า GOOGLE_SHEET_URL ที่ส่วนหัวของโค้ดสคริปต์ในไฟล์ index.html ก่อนใช้งาน');
+        return;
+      }
+
+      const btnSubmit = document.getElementById('btn-submit');
+      const btnSpinner = document.getElementById('btn-spinner');
+      const btnText = document.getElementById('btn-text');
+
+      // UI state loading
+      btnSubmit.disabled = true;
+      btnSpinner.style.display = 'inline-block';
+      btnText.innerText = 'กำลังส่งข้อมูล...';
+
+      const payload = {
+        action: 'addOrder',
+        customerName: document.getElementById('customer-name').value,
+        groomName: document.getElementById('groom-name').value,
+        brideName: document.getElementById('bride-name').value,
+        requiredDate: document.getElementById('required-date').value,
+        size: document.getElementById('size').value,
+        color: document.getElementById('color').value,
+        notes: document.getElementById('notes').value,
+        images: uploadedImages
+      };
+
+      try {
+        const response = await fetch(GOOGLE_SHEET_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload),
+          redirect: 'follow'
+        });
+
+        if (response.ok) {
+          const resJson = await response.json();
+          if (resJson.success) {
+            document.getElementById('success-overlay').classList.add('active');
+          } else {
+            alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล: ' + resJson.error);
+          }
+        } else {
+          alert('เกิดข้อผิดพลาดในการเชื่อมต่อ Google Sheets API');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('ไม่สามารถเชื่อมต่อ Google Sheets Web App ได้ กรุณาตรวจสอบ URL หรือการเชื่อมต่ออินเทอร์เน็ต');
+      } finally {
+        btnSubmit.disabled = false;
+        btnSpinner.style.display = 'none';
+        btnText.innerText = 'ส่งข้อมูลสั่งตัด';
+      }
+    }
+
+    // Reset Form for New Order
+    function resetForm() {
+      document.getElementById('order-form').reset();
+      uploadedImages = [];
+      document.getElementById('preview-container').innerHTML = '';
+      document.getElementById('success-overlay').classList.remove('active');
+    }
+
+    async function fetchColors() {
+      if (!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL.includes("YOUR_GOOGLE_SHEET_WEB_APP_URL")) {
+        // Fallback default options if URL is not configured yet
+        const select = document.getElementById('color');
+        select.innerHTML = `
+          <option value="" disabled selected>เลือกสีที่ต้องการ...</option>
+          <option value="สีทองกากเพชร (ยอดนิยม)">สีทองกากเพชร (ยอดนิยม)</option>
+          <option value="สีเงินกากเพชร">สีเงินกากเพชร</option>
+          <option value="สีชมพูพาสเทล">สีชมพูพาสเทล</option>
+          <option value="สีขาวโฟมธรรมชาติ">สีขาวโฟมธรรมชาติ</option>
+          <option value="สีแดง">สีแดง</option>
+          <option value="สีน้ำเงิน">สีน้ำเงิน</option>
+          <option value="ระบุสีเพิ่มเติมในรายละเอียด">อื่นๆ (ระบุเพิ่มเติมในช่องหมายเหตุ)</option>
+        `;
+        return;
+      }
+
+      try {
+        const response = await fetch(GOOGLE_SHEET_URL + '?action=getColors', { redirect: 'follow' });
+        if (response.ok) {
+          const colors = await response.json();
+          const select = document.getElementById('color');
+          select.innerHTML = '<option value="" disabled selected>เลือกสีที่ต้องการ...</option>';
+          colors.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c;
+            opt.innerText = c;
+            select.appendChild(opt);
+          });
+          const optOther = document.createElement('option');
+          optOther.value = 'ระบุสีเพิ่มเติมในรายละเอียด';
+          optOther.innerText = 'อื่นๆ (ระบุเพิ่มเติมในช่องหมายเหตุ)';
+          select.appendChild(optOther);
+        }
+      } catch (err) {
+        console.error('Error fetching colors:', err);
+      }
+    }
+
+    // Set minimum date in date picker to today
+    window.addEventListener('DOMContentLoaded', () => {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('required-date').setAttribute('min', today);
+      fetchColors();
+    });
+  </script>
+</body>
+</html>
