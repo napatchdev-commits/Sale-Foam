@@ -491,8 +491,22 @@
         <input type="text" id="customer-name" placeholder="ระบุชื่อ-นามสกุล หรือชื่อร้านของคุณ" required>
       </div>
 
-      <!-- Wedding Names Row -->
+      <!-- Ceremony Type Selection -->
       <div class="form-row">
+        <div class="form-group">
+          <label for="ceremony-type">
+            <span>🎉 ประเภทงานที่ต้องการสั่งตัด</span> <span class="required">*</span>
+          </label>
+          <select id="ceremony-type" onchange="handleCeremonyTypeChange(this.value)" required>
+            <option value="wedding" selected>งานแต่งงาน (Wedding)</option>
+            <option value="ordination">งานอุปสมบท / งานบวช (Ordination)</option>
+            <option value="general">โลโก้ทั่วไป / ป้ายงานอื่นๆ (General)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Wedding Names Row -->
+      <div class="form-row" id="wedding-names-row">
         <div class="form-group">
           <label for="groom-name">
             <span>🤵 ชื่อเจ้าบ่าว</span>
@@ -504,6 +518,16 @@
             <span>👰 ชื่อเจ้าสาว</span>
           </label>
           <input type="text" id="bride-name" placeholder="พิมพ์ชื่อภาษาไทย/อังกฤษ (ถ้ามี)">
+        </div>
+      </div>
+
+      <!-- Ordination Name Row -->
+      <div class="form-row" id="ordination-name-row" style="display: none;">
+        <div class="form-group">
+          <label for="nag-name">
+            <span>👶 ชื่อนาค</span> <span class="required">*</span>
+          </label>
+          <input type="text" id="nag-name" placeholder="พิมพ์ชื่อของนาค เช่น นาคโบ๊ท">
         </div>
       </div>
 

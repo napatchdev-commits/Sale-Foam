@@ -78,6 +78,26 @@
       });
     }
 
+    function handleCeremonyTypeChange(type) {
+      const weddingRow = document.getElementById('wedding-names-row');
+      const ordinationRow = document.getElementById('ordination-name-row');
+      const nagName = document.getElementById('nag-name');
+
+      if (type === 'wedding') {
+        if (weddingRow) weddingRow.style.display = 'flex';
+        if (ordinationRow) ordinationRow.style.display = 'none';
+        if (nagName) nagName.required = false;
+      } else if (type === 'ordination') {
+        if (weddingRow) weddingRow.style.display = 'none';
+        if (ordinationRow) ordinationRow.style.display = 'flex';
+        if (nagName) nagName.required = true;
+      } else {
+        if (weddingRow) weddingRow.style.display = 'none';
+        if (ordinationRow) ordinationRow.style.display = 'none';
+        if (nagName) nagName.required = false;
+      }
+    }
+
     function handleQuantityChange(qty) {
       const val = parseInt(qty);
       const group2 = document.getElementById('color-group-2');
@@ -145,11 +165,23 @@
         combinedColor = `ชิ้นที่ 1: ${c1}, ชิ้นที่ 2: ${c2}, ชิ้นที่ 3: ${c3}`;
       }
 
+      const ceremonyType = document.getElementById('ceremony-type').value;
+      let finalGroomName = "";
+      let finalBrideName = "";
+
+      if (ceremonyType === 'wedding') {
+        finalGroomName = document.getElementById('groom-name').value;
+        finalBrideName = document.getElementById('bride-name').value;
+      } else if (ceremonyType === 'ordination') {
+        finalGroomName = document.getElementById('nag-name').value;
+        finalBrideName = "[งานบวช]";
+      } // Else general leaves them empty
+
       const payload = {
         action: 'addOrder',
         customerName: document.getElementById('customer-name').value,
-        groomName: document.getElementById('groom-name').value,
-        brideName: document.getElementById('bride-name').value,
+        groomName: finalGroomName,
+        brideName: finalBrideName,
         requiredDate: document.getElementById('required-date').value,
         size: document.getElementById('size').value + " (จำนวน: " + qty + " ชิ้น)",
         color: combinedColor,
@@ -190,6 +222,7 @@
       uploadedImages = [];
       document.getElementById('preview-container').innerHTML = '';
       document.getElementById('success-overlay').classList.remove('active');
+      handleCeremonyTypeChange('wedding');
       handleQuantityChange(1);
     }
 
