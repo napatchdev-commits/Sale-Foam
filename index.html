@@ -523,21 +523,16 @@
         </div>
       </div>
 
-      <!-- Color and Notes -->
+      <!-- Quantity Selection -->
       <div class="form-row">
         <div class="form-group">
-          <label for="color">
-            <span>🎨 สีที่ต้องการ</span> <span class="required">*</span>
+          <label for="quantity">
+            <span>🔢 จำนวนชิ้น</span> <span class="required">*</span>
           </label>
-          <select id="color" required>
-            <option value="" disabled selected>เลือกสีที่ต้องการ...</option>
-            <option value="สีทองกากเพชร">สีทองกากเพชร (ยอดนิยม)</option>
-            <option value="สีเงินกากเพชร">สีเงินกากเพชร</option>
-            <option value="สีชมพูพาสเทล">สีชมพูพาสเทล</option>
-            <option value="สีขาวโฟมธรรมชาติ">สีขาวโฟมธรรมชาติ</option>
-            <option value="สีแดง">สีแดง</option>
-            <option value="สีน้ำเงิน">สีน้ำเงิน</option>
-            <option value="ระบุสีเพิ่มเติมในรายละเอียด">อื่นๆ (ระบุเพิ่มเติมในช่องหมายเหตุ)</option>
+          <select id="quantity" onchange="handleQuantityChange(this.value)" required>
+            <option value="1" selected>1 ชิ้น</option>
+            <option value="2">2 ชิ้น</option>
+            <option value="3">3 ชิ้น</option>
           </select>
         </div>
         <div class="form-group">
@@ -545,6 +540,59 @@
             <span>📝 รายละเอียด / หมายเหตุเพิ่มเติม</span>
           </label>
           <input type="text" id="notes" placeholder="เช่น ความหนา 1.5 นิ้ว, เปลี่ยนฟอนต์คำว่า..." style="height: 100%;">
+        </div>
+      </div>
+
+      <!-- Colors Container -->
+      <div id="colors-container" style="margin-bottom: 1.5rem;">
+        <div class="form-row">
+          <div class="form-group" id="color-group-1">
+            <label for="color">
+              <span>🎨 สีของชิ้นที่ 1</span> <span class="required">*</span>
+            </label>
+            <select id="color" class="color-selector" required>
+              <option value="" disabled selected>เลือกสีที่ต้องการ...</option>
+              <option value="สีทองกากเพชร">สีทองกากเพชร (ยอดนิยม)</option>
+              <option value="สีเงินกากเพชร">สีเงินกากเพชร</option>
+              <option value="สีชมพูพาสเทล">สีชมพูพาสเทล</option>
+              <option value="สีขาวโฟมธรรมชาติ">สีขาวโฟมธรรมชาติ</option>
+              <option value="สีแดง">สีแดง</option>
+              <option value="สีน้ำเงิน">สีน้ำเงิน</option>
+              <option value="ระบุสีเพิ่มเติมในรายละเอียด">อื่นๆ (ระบุเพิ่มเติมในช่องหมายเหตุ)</option>
+            </select>
+          </div>
+          <div class="form-group" id="color-group-2" style="display: none;">
+            <label for="color-2">
+              <span>🎨 สีของชิ้นที่ 2</span> <span class="required">*</span>
+            </label>
+            <select id="color-2" class="color-selector">
+              <option value="" disabled selected>เลือกสีที่ต้องการ...</option>
+              <option value="สีทองกากเพชร">สีทองกากเพชร (ยอดนิยม)</option>
+              <option value="สีเงินกากเพชร">สีเงินกากเพชร</option>
+              <option value="สีชมพูพาสเทล">สีชมพูพาสเทล</option>
+              <option value="สีขาวโฟมธรรมชาติ">สีขาวโฟมธรรมชาติ</option>
+              <option value="สีแดง">สีแดง</option>
+              <option value="สีน้ำเงิน">สีน้ำเงิน</option>
+              <option value="ระบุสีเพิ่มเติมในรายละเอียด">อื่นๆ (ระบุเพิ่มเติมในช่องหมายเหตุ)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row" id="color-row-2" style="display: none;">
+          <div class="form-group" id="color-group-3" style="max-width: 50%;">
+            <label for="color-3">
+              <span>🎨 สีของชิ้นที่ 3</span> <span class="required">*</span>
+            </label>
+            <select id="color-3" class="color-selector">
+              <option value="" disabled selected>เลือกสีที่ต้องการ...</option>
+              <option value="สีทองกากเพชร">สีทองกากเพชร (ยอดนิยม)</option>
+              <option value="สีเงินกากเพชร">สีเงินกากเพชร</option>
+              <option value="สีชมพูพาสเทล">สีชมพูพาสเทล</option>
+              <option value="สีขาวโฟมธรรมชาติ">สีขาวโฟมธรรมชาติ</option>
+              <option value="สีแดง">สีแดง</option>
+              <option value="สีน้ำเงิน">สีน้ำเงิน</option>
+              <option value="ระบุสีเพิ่มเติมในรายละเอียด">อื่นๆ (ระบุเพิ่มเติมในช่องหมายเหตุ)</option>
+            </select>
+          </div>
         </div>
       </div>
 

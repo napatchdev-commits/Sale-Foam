@@ -78,6 +78,31 @@
       });
     }
 
+    function handleQuantityChange(qty) {
+      const val = parseInt(qty);
+      const group2 = document.getElementById('color-group-2');
+      const row2 = document.getElementById('color-row-2');
+      const color2 = document.getElementById('color-2');
+      const color3 = document.getElementById('color-3');
+
+      if (val === 1) {
+        if (group2) group2.style.display = 'none';
+        if (row2) row2.style.display = 'none';
+        if (color2) color2.required = false;
+        if (color3) color3.required = false;
+      } else if (val === 2) {
+        if (group2) group2.style.display = 'block';
+        if (row2) row2.style.display = 'none';
+        if (color2) color2.required = true;
+        if (color3) color3.required = false;
+      } else if (val === 3) {
+        if (group2) group2.style.display = 'block';
+        if (row2) row2.style.display = 'block';
+        if (color2) color2.required = true;
+        if (color3) color3.required = true;
+      }
+    }
+
     // Submit Order Form
     async function submitForm(e) {
       e.preventDefault();
@@ -106,14 +131,28 @@
       btnSpinner.style.display = 'inline-block';
       btnText.innerText = 'กำลังส่งข้อมูล...';
 
+      const qty = parseInt(document.getElementById('quantity').value) || 1;
+      let combinedColor = "";
+      const c1 = document.getElementById('color').value;
+      if (qty === 1) {
+        combinedColor = c1;
+      } else if (qty === 2) {
+        const c2 = document.getElementById('color-2').value;
+        combinedColor = `ชิ้นที่ 1: ${c1}, ชิ้นที่ 2: ${c2}`;
+      } else if (qty === 3) {
+        const c2 = document.getElementById('color-2').value;
+        const c3 = document.getElementById('color-3').value;
+        combinedColor = `ชิ้นที่ 1: ${c1}, ชิ้นที่ 2: ${c2}, ชิ้นที่ 3: ${c3}`;
+      }
+
       const payload = {
         action: 'addOrder',
         customerName: document.getElementById('customer-name').value,
         groomName: document.getElementById('groom-name').value,
         brideName: document.getElementById('bride-name').value,
         requiredDate: document.getElementById('required-date').value,
-        size: document.getElementById('size').value,
-        color: document.getElementById('color').value,
+        size: document.getElementById('size').value + " (จำนวน: " + qty + " ชิ้น)",
+        color: combinedColor,
         notes: document.getElementById('notes').value,
         images: uploadedImages
       };
@@ -151,22 +190,24 @@
       uploadedImages = [];
       document.getElementById('preview-container').innerHTML = '';
       document.getElementById('success-overlay').classList.remove('active');
+      handleQuantityChange(1);
     }
 
     async function fetchColors() {
+      const selectors = document.querySelectorAll('.color-selector');
       if (!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL.includes("YOUR_GOOGLE_SHEET_WEB_APP_URL")) {
-        // Fallback default options if URL is not configured yet
-        const select = document.getElementById('color');
-        select.innerHTML = `
-          <option value="" disabled selected>เลือกสีที่ต้องการ...</option>
-          <option value="สีทองกากเพชร (ยอดนิยม)">สีทองกากเพชร (ยอดนิยม)</option>
-          <option value="สีเงินกากเพชร">สีเงินกากเพชร</option>
-          <option value="สีชมพูพาสเทล">สีชมพูพาสเทล</option>
-          <option value="สีขาวโฟมธรรมชาติ">สีขาวโฟมธรรมชาติ</option>
-          <option value="สีแดง">สีแดง</option>
-          <option value="สีน้ำเงิน">สีน้ำเงิน</option>
-          <option value="ระบุสีเพิ่มเติมในรายละเอียด">อื่นๆ (ระบุเพิ่มเติมในช่องหมายเหตุ)</option>
-        `;
+        selectors.forEach(select => {
+          select.innerHTML = `
+            <option value="" disabled selected>เลือกสีที่ต้องการ...</option>
+            <option value="สีทองกากเพชร (ยอดนิยม)">สีทองกากเพชร (ยอดนิยม)</option>
+            <option value="สีเงินกากเพชร">สีเงินกากเพชร</option>
+            <option value="สีชมพูพาสเทล">สีชมพูพาสเทล</option>
+            <option value="สีขาวโฟมธรรมชาติ">สีขาวโฟมธรรมชาติ</option>
+            <option value="สีแดง">สีแดง</option>
+            <option value="สีน้ำเงิน">สีน้ำเงิน</option>
+            <option value="ระบุสีเพิ่มเติมในรายละเอียด">อื่นๆ (ระบุเพิ่มเติมในช่องหมายเหตุ)</option>
+          `;
+        });
         return;
       }
 
@@ -174,18 +215,21 @@
         const response = await fetch(GOOGLE_SHEET_URL + '?action=getColors', { redirect: 'follow' });
         if (response.ok) {
           const colors = await response.json();
-          const select = document.getElementById('color');
-          select.innerHTML = '<option value="" disabled selected>เลือกสีที่ต้องการ...</option>';
-          colors.forEach(c => {
-            const opt = document.createElement('option');
-            opt.value = c;
-            opt.innerText = c;
-            select.appendChild(opt);
+          selectors.forEach(select => {
+            const currentValue = select.value;
+            select.innerHTML = '<option value="" disabled selected>เลือกสีที่ต้องการ...</option>';
+            colors.forEach(c => {
+              const opt = document.createElement('option');
+              opt.value = c;
+              opt.innerText = c;
+              select.appendChild(opt);
+            });
+            const optOther = document.createElement('option');
+            optOther.value = 'ระบุสีเพิ่มเติมในรายละเอียด';
+            optOther.innerText = 'อื่นๆ (ระบุเพิ่มเติมในช่องหมายเหตุ)';
+            select.appendChild(optOther);
+            if (currentValue) select.value = currentValue;
           });
-          const optOther = document.createElement('option');
-          optOther.value = 'ระบุสีเพิ่มเติมในรายละเอียด';
-          optOther.innerText = 'อื่นๆ (ระบุเพิ่มเติมในช่องหมายเหตุ)';
-          select.appendChild(optOther);
         }
       } catch (err) {
         console.error('Error fetching colors:', err);
