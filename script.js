@@ -294,12 +294,6 @@
       if (savedName) {
         const nameInput = document.getElementById('customer-name');
         if (nameInput) nameInput.value = savedName;
-        
-        const historyToggle = document.getElementById('history-toggle-container');
-        if (historyToggle) historyToggle.style.display = 'block';
-      } else {
-        const historyToggle = document.getElementById('history-toggle-container');
-        if (historyToggle) historyToggle.style.display = 'none';
       }
     });
 
@@ -321,11 +315,15 @@
 
     // Fetch customer-specific order history
     async function fetchOrderHistory() {
-      const savedName = localStorage.getItem('logo_foam_customer_name');
-      if (!savedName) return;
-
+      const savedName = localStorage.getItem('logo_foam_customer_name') || document.getElementById('customer-name').value.trim();
+      
       const container = document.getElementById('history-list');
       if (!container) return;
+
+      if (!savedName) {
+        container.innerHTML = '<div style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; text-align: center; padding: 1.5rem 0; color: #ef4444;">กรุณากรอกชื่อในช่อง "ชื่อผู้สั่งตัด" ด้านบนเพื่อดึงประวัติสั่งซื้อย้อนหลัง</div>';
+        return;
+      }
       
       container.innerHTML = '<div style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; text-align: center; padding: 1.5rem 0;">กำลังดึงข้อมูลประวัติของคุณ...</div>';
 
