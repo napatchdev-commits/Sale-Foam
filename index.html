@@ -452,6 +452,113 @@
       from { transform: scale(0); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
+    /* History Styles */
+    .history-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      transition: all 0.25s ease;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .history-card:hover {
+      border-color: rgba(212, 175, 55, 0.3);
+      background: rgba(255, 255, 255, 0.05);
+      transform: translateY(-2px);
+    }
+
+    .history-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      border-bottom: 1px dashed rgba(212, 175, 55, 0.1);
+      padding-bottom: 0.5rem;
+    }
+
+    .history-card-id {
+      font-weight: 700;
+      color: var(--accent-color);
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .history-card-date {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .history-card-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      font-size: 0.88rem;
+    }
+
+    .history-card-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .history-card-label {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .history-card-val {
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .history-card-images {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .history-card-img {
+      width: 50px;
+      height: 50px;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .history-card-img:hover {
+      transform: scale(1.1);
+      border-color: var(--accent-color);
+    }
+
+    .badge {
+      padding: 0.25rem 0.5rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .badge.pending {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .badge.progress {
+      background: rgba(59, 130, 246, 0.15);
+      color: #3b82f6;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .badge.completed {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
   </style>
 </head>
 <body>
@@ -641,6 +748,31 @@
       </button>
 
     </form>
+
+    <!-- History Toggle Button -->
+    <div style="text-align: center; margin-top: 1.5rem;" id="history-toggle-container">
+      <button type="button" class="btn-history-toggle" id="btn-history-toggle" onclick="toggleHistorySection()" style="background: none; border: none; color: var(--accent-color); font-weight: 500; cursor: pointer; text-decoration: underline; font-size: 0.95rem;">
+        📜 ดูประวัติการสั่งตัดล่าสุดของคุณ
+      </button>
+    </div>
+
+    <!-- History Section -->
+    <div id="history-section" style="display: none; margin-top: 2rem; border-top: 1px dashed var(--border-color); padding-top: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
+        <h3 style="color: var(--accent-color); font-size: 1.15rem; margin: 0; display: flex; align-items: center; gap: 0.5rem; font-family: 'Outfit', sans-serif;">
+          📜 ประวัติการสั่งตัดของคุณ
+        </h3>
+        <button type="button" onclick="fetchOrderHistory()" style="background: rgba(212, 175, 55, 0.1); border: 1px solid var(--accent-color); color: var(--accent-color); padding: 0.3rem 0.7rem; border-radius: 6px; font-size: 0.8rem; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 0.3rem;">
+          🔄 รีเฟรช
+        </button>
+      </div>
+      <div id="history-list">
+        <!-- History Cards populated dynamically -->
+        <div style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; text-align: center; padding: 1.5rem 0;">
+          ไม่มีประวัติสั่งซื้อ หรือกำลังโหลดข้อมูล...
+        </div>
+      </div>
+    </div>
 
   </div>
 

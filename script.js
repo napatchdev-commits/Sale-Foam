@@ -199,6 +199,20 @@
         if (response.ok) {
           const resJson = await response.json();
           if (resJson.success) {
+            // Save customer name to localStorage for auto-fill and history tracking
+            const customerNameVal = document.getElementById('customer-name').value.trim();
+            localStorage.setItem('logo_foam_customer_name', customerNameVal);
+            
+            // Show history toggle button
+            const historyToggle = document.getElementById('history-toggle-container');
+            if (historyToggle) historyToggle.style.display = 'block';
+            
+            // Reload history if currently open
+            const historySection = document.getElementById('history-section');
+            if (historySection && historySection.style.display === 'block') {
+              fetchOrderHistory();
+            }
+
             document.getElementById('success-overlay').classList.add('active');
           } else {
             alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล: ' + resJson.error);
@@ -274,4 +288,138 @@
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('required-date').setAttribute('min', today);
       fetchColors();
+
+      // Auto-fill customer name if saved in localStorage
+      const savedName = localStorage.getItem('logo_foam_customer_name');
+      if (savedName) {
+        const nameInput = document.getElementById('customer-name');
+        if (nameInput) nameInput.value = savedName;
+        
+        const historyToggle = document.getElementById('history-toggle-container');
+        if (historyToggle) historyToggle.style.display = 'block';
+      } else {
+        const historyToggle = document.getElementById('history-toggle-container');
+        if (historyToggle) historyToggle.style.display = 'none';
+      }
     });
+
+    // Toggle Order History Display
+    function toggleHistorySection() {
+      const section = document.getElementById('history-section');
+      const btn = document.getElementById('btn-history-toggle');
+      if (section && btn) {
+        if (section.style.display === 'none') {
+          section.style.display = 'block';
+          fetchOrderHistory();
+          btn.innerText = "🙈 ซ่อนประวัติการสั่งตัด";
+        } else {
+          section.style.display = 'none';
+          btn.innerText = "📜 ดูประวัติการสั่งตัดล่าสุดของคุณ";
+        }
+      }
+    }
+
+    // Fetch customer-specific order history
+    async function fetchOrderHistory() {
+      const savedName = localStorage.getItem('logo_foam_customer_name');
+      if (!savedName) return;
+
+      const container = document.getElementById('history-list');
+      if (!container) return;
+      
+      container.innerHTML = '<div style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; text-align: center; padding: 1.5rem 0;">กำลังดึงข้อมูลประวัติของคุณ...</div>';
+
+      if (!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL.includes("YOUR_GOOGLE_SHEET_WEB_APP_URL")) {
+        container.innerHTML = '<div style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; text-align: center; padding: 1.5rem 0; color: #ef4444;">ไม่ได้ตั้งค่า Google Sheets Web App URL</div>';
+        return;
+      }
+
+      try {
+        const response = await fetch(GOOGLE_SHEET_URL + `?action=getCustomerOrders&customerName=${encodeURIComponent(savedName)}`, { redirect: 'follow' });
+        if (response.ok) {
+          const orders = await response.json();
+          if (orders.length === 0) {
+            container.innerHTML = '<div style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; text-align: center; padding: 1.5rem 0;">ไม่พบประวัติการสั่งตัดชื่อนี้</div>';
+            return;
+          }
+          
+          // Sort by id descending (newest first)
+          orders.sort((a, b) => b.id - a.id);
+          
+          container.innerHTML = '';
+          orders.forEach(order => {
+            const card = document.createElement('div');
+            card.className = 'history-card';
+            
+            let statusClass = 'pending';
+            if (order.status === 'กำลังผลิต') statusClass = 'progress';
+            if (order.status === 'เสร็จสิ้นแล้ว') statusClass = 'completed';
+
+            let detailsText = "";
+            if (order.brideName === '[งานบวช]') {
+              detailsText = `👶 งานบวช: นาค ${order.groomName || '-'}`;
+            } else if (order.groomName || order.brideName) {
+              detailsText = `🤵 ${order.groomName || '-'} & 👰 ${order.brideName || '-'}`;
+            } else {
+              detailsText = 'โลโก้ทั่วไป';
+            }
+
+            // Format date
+            let displayDate = order.requiredDate || '-';
+            if (displayDate.includes('T')) {
+              displayDate = displayDate.split('T')[0];
+            }
+            if (displayDate.split('-').length === 3) {
+              const parts = displayDate.split('-');
+              displayDate = `${parts[2]}/${parts[1]}/${parseInt(parts[0]) + 543}`;
+            }
+
+            let imagesHtml = "";
+            if (order.images && order.images.length > 0) {
+              imagesHtml = '<div class="history-card-images">';
+              order.images.forEach(imgUrl => {
+                let directUrl = imgUrl;
+                const match = imgUrl.match(/\/file\/d\/([^/]+)/) || imgUrl.match(/id=([^&]+)/);
+                if (match && match[1]) {
+                  directUrl = `https://lh3.googleusercontent.com/d/${match[1]}`;
+                }
+                imagesHtml += `<img src="${directUrl}" class="history-card-img" onclick="window.open('${directUrl}')" alt="รูปสั่งตัด">`;
+              });
+              imagesHtml += '</div>';
+            }
+
+            card.innerHTML = `
+              <div class="history-card-header">
+                <span class="history-card-id">#${order.id}</span>
+                <span class="badge ${statusClass}">${order.status}</span>
+              </div>
+              <div class="history-card-grid">
+                <div class="history-card-item">
+                  <span class="history-card-label">รายละเอียด:</span>
+                  <span class="history-card-val">${detailsText}</span>
+                </div>
+                <div class="history-card-item">
+                  <span class="history-card-label">วันที่ใช้:</span>
+                  <span class="history-card-val">${displayDate}</span>
+                </div>
+                <div class="history-card-item">
+                  <span class="history-card-label">ขนาด:</span>
+                  <span class="history-card-val">${order.size}</span>
+                </div>
+                <div class="history-card-item">
+                  <span class="history-card-label">สี:</span>
+                  <span class="history-card-val">${order.color}</span>
+                </div>
+                ${imagesHtml}
+              </div>
+            `;
+            container.appendChild(card);
+          });
+        } else {
+          container.innerHTML = '<div style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; text-align: center; padding: 1.5rem 0; color: #ef4444;">ไม่สามารถดึงข้อมูลประวัติได้</div>';
+        }
+      } catch (err) {
+        console.error(err);
+        container.innerHTML = '<div style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; text-align: center; padding: 1.5rem 0; color: #ef4444;">เกิดข้อผิดพลาดในการเชื่อมต่อคลาวด์</div>';
+      }
+    }
