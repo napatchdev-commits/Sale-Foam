@@ -559,6 +559,164 @@
       color: #10b981;
       border: 1px solid rgba(16, 185, 129, 0.3);
     }
+    /* Shop Contact Info Styles */
+    .shop-contact-info {
+      margin-top: 0.8rem;
+      font-size: 0.88rem;
+      color: #e2e8f0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.2rem;
+      font-weight: 500;
+    }
+
+    .shop-contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.25s ease;
+    }
+
+    .shop-contact-item:hover {
+      background: rgba(212, 175, 55, 0.1);
+      border-color: rgba(212, 175, 55, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .shop-contact-item a {
+      color: var(--accent-color);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* Modal Backdrop for Image Editor */
+    .editor-modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+      padding: 1rem;
+    }
+
+    .editor-modal-content {
+      background: #18181b;
+      border: 1.5px solid var(--accent-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 600px;
+      color: #fff;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      max-height: 90vh;
+      animation: scaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Custom Status Popup Overlay */
+    .status-popup-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 10001;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(5px);
+    }
+
+    .status-popup-content {
+      background: #18181b;
+      border: 2px solid var(--border-color);
+      border-radius: 20px;
+      padding: 2rem;
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      animation: scaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .status-popup-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+
+    .status-popup-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .status-popup-desc {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+
+    .status-popup-btn {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.25s ease;
+    }
+
+    .status-popup-content.success {
+      border-color: #10b981;
+    }
+    .status-popup-content.success .status-popup-icon {
+      animation: pulse 2s infinite;
+    }
+    .status-popup-content.success .status-popup-title {
+      color: #10b981;
+    }
+    .status-popup-content.success .status-popup-btn {
+      background: #10b981;
+      color: #000;
+    }
+    .status-popup-content.success .status-popup-btn:hover {
+      background: #059669;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .status-popup-content.error {
+      border-color: #ef4444;
+    }
+    .status-popup-content.error .status-popup-title {
+      color: #ef4444;
+    }
+    .status-popup-content.error .status-popup-btn {
+      background: #ef4444;
+      color: #fff;
+    }
+    .status-popup-content.error .status-popup-btn:hover {
+      background: #dc2626;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
   </style>
 </head>
 <body>
@@ -581,10 +739,18 @@
     <!-- Main Header -->
     <header>
       <div class="logo-container">
-        <div class="logo-icon">👑</div>
+        <img src="โลโก้ใหม่.png" alt="Logo" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2.5px solid var(--accent-color); margin-bottom: 0.5rem; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);">
       </div>
       <h1>ระบบสั่งตัดโลโก้โฟม</h1>
       <p class="subtitle">สั่งทําโลโก้โฟมลวดลายพิเศษ สําหรับใช้ในงานแต่งงานและอีเวนต์ต่างๆ</p>
+      <div class="shop-contact-info">
+        <div class="shop-contact-item">
+          <span>📞 โทร: <a href="tel:0855304890">085-530-4890</a></span>
+        </div>
+        <div class="shop-contact-item">
+          <span>💬 Line ID: <a href="https://line.me/ti/p/~napatch99" target="_blank">napatch99</a></span>
+        </div>
+      </div>
     </header>
 
     <!-- Order Form -->
@@ -612,69 +778,85 @@
         </div>
       </div>
 
-      <!-- Wedding Names Row -->
-      <div class="form-row" id="wedding-names-row">
-        <div class="form-group">
-          <label for="groom-name">
-            <span>🤵 ชื่อเจ้าบ่าว</span>
-          </label>
-          <input type="text" id="groom-name" placeholder="พิมพ์ชื่อภาษาไทย/อังกฤษ (ถ้ามี)">
+      <!-- Wedding Names Row (Dynamic) -->
+      <div id="wedding-names-section" style="display: block;">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="groom-name">
+              <span>🤵 ชื่อเจ้าบ่าว (ภาษาไทย)</span>
+            </label>
+            <input type="text" id="groom-name" placeholder="พิมพ์ชื่อภาษาไทย (ถ้ามี เช่น ณัฐพล)">
+          </div>
+          <div class="form-group">
+            <label for="bride-name">
+              <span>👰 ชื่อเจ้าสาว (ภาษาไทย)</span>
+            </label>
+            <input type="text" id="bride-name" placeholder="พิมพ์ชื่อภาษาไทย (ถ้ามี เช่น รินรดา)">
+          </div>
         </div>
-        <div class="form-group">
-          <label for="bride-name">
-            <span>👰 ชื่อเจ้าสาว</span>
-          </label>
-          <input type="text" id="bride-name" placeholder="พิมพ์ชื่อภาษาไทย/อังกฤษ (ถ้ามี)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="groom-name-en">
+              <span>🤵 ชื่อเจ้าบ่าว (ภาษาอังกฤษ)</span>
+            </label>
+            <input type="text" id="groom-name-en" placeholder="พิมพ์ชื่อภาษาอังกฤษ (ถ้ามี เช่น Nattapon)">
+          </div>
+          <div class="form-group">
+            <label for="bride-name-en">
+              <span>👰 ชื่อเจ้าสาว (ภาษาอังกฤษ)</span>
+            </label>
+            <input type="text" id="bride-name-en" placeholder="พิมพ์ชื่อภาษาอังกฤษ (ถ้ามี เช่น Rinrada)">
+          </div>
         </div>
       </div>
 
-      <!-- Ordination Name Row -->
-      <div class="form-row" id="ordination-name-row" style="display: none;">
-        <div class="form-group">
-          <label for="nag-name">
-            <span>👶 ชื่อนาค</span> <span class="required">*</span>
-          </label>
-          <input type="text" id="nag-name" placeholder="พิมพ์ชื่อของนาค เช่น นาคโบ๊ท">
+      <!-- Ordination Name Row (Dynamic) -->
+      <div id="ordination-names-section" style="display: none;">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nag-name">
+              <span>👶 ชื่อนาค (ชื่อจริง)</span> <span class="required">*</span>
+            </label>
+            <input type="text" id="nag-name" placeholder="พิมพ์ชื่อจริงของนาค เช่น นาคโบ๊ท">
+          </div>
+          <div class="form-group">
+            <label for="nag-nickname">
+              <span>👶 ชื่อเล่นนาค</span>
+            </label>
+            <input type="text" id="nag-nickname" placeholder="พิมพ์ชื่อเล่นของนาค (ถ้ามี เช่น โบ๊ท)">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ordination-symbol">
+              <span>☸️ สัญลักษณ์งานบวช</span> <span class="required">*</span>
+            </label>
+            <select id="ordination-symbol">
+              <option value="" disabled selected>เลือกสัญลักษณ์ที่ต้องการ...</option>
+              <option value="ธรรมจักร">ธรรมจักร</option>
+              <option value="โบสถ์">โบสถ์</option>
+              <option value="กราบลาอุปสมบท">กราบลาอุปสมบท</option>
+              <option value="สู่ร่มกาสาวพัสตร์">สู่ร่มกาสาวพัสตร์</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      <!-- Date, Size, Color Row -->
+      <!-- Material Backing Selection -->
       <div class="form-row">
         <div class="form-group">
-          <label for="required-date">
-            <span>📅 วันที่ต้องการใช้ (วัน/เดือน/ปี)</span> <span class="required">*</span>
+          <label for="material-type">
+            <span>🛠️ รูปแบบแผ่นรองหลัง</span> <span class="required">*</span>
           </label>
-          <input type="date" id="required-date" required>
-        </div>
-        <div class="form-group">
-          <label for="size">
-            <span>📐 ขนาดที่ต้องการ (ซม.)</span> <span class="required">*</span>
-          </label>
-          <input type="text" id="size" placeholder="เช่น 120 x 80 ซม. หรือ กว้าง 1.5 เมตร" required>
-        </div>
-      </div>
-
-      <!-- Quantity Selection -->
-      <div class="form-row">
-        <div class="form-group">
-          <label for="quantity">
-            <span>🔢 จำนวนชิ้น</span> <span class="required">*</span>
-          </label>
-          <select id="quantity" onchange="handleQuantityChange(this.value)" required>
-            <option value="1" selected>1 ชิ้น</option>
-            <option value="2">2 ชิ้น</option>
-            <option value="3">3 ชิ้น</option>
+          <select id="material-type" required>
+            <option value="รองโฟม" selected>งานรองโฟม (ยอดนิยม)</option>
+            <option value="รองอะคริลิก">งานรองอะคริลิกใส (เพิ่มความพรีเมียม)</option>
+            <option value="ไม่รองหลัง">ไม่รองหลัง (เฉพาะตัวหนังสือโฟมเปล่า)</option>
           </select>
         </div>
-        <div class="form-group">
-          <label for="notes">
-            <span>📝 รายละเอียด / หมายเหตุเพิ่มเติม</span>
-          </label>
-          <input type="text" id="notes" placeholder="เช่น ความหนา 1.5 นิ้ว, เปลี่ยนฟอนต์คำว่า..." style="height: 100%;">
-        </div>
       </div>
 
-      <!-- Colors Container -->
+      <!-- Colors Container (Moved BEFORE Size/Quantity/Notes) -->
       <div id="colors-container" style="margin-bottom: 1.5rem;">
         <div class="form-row">
           <div class="form-group" id="color-group-1">
@@ -727,6 +909,42 @@
         </div>
       </div>
 
+      <!-- Date and Size Row -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="required-date">
+            <span>📅 วันที่ต้องการใช้ (วัน/เดือน/ปี)</span> <span class="required">*</span>
+          </label>
+          <input type="date" id="required-date" required>
+        </div>
+        <div class="form-group">
+          <label for="size">
+            <span>📐 ขนาดที่ต้องการ (ซม.)</span> <span class="required">*</span>
+          </label>
+          <input type="text" id="size" placeholder="เช่น 120 x 80 ซม. หรือ กว้าง 1.5 เมตร" required>
+        </div>
+      </div>
+
+      <!-- Quantity Selection and Notes -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="quantity">
+            <span>🔢 จำนวนชิ้น</span> <span class="required">*</span>
+          </label>
+          <select id="quantity" onchange="handleQuantityChange(this.value)" required>
+            <option value="1" selected>1 ชิ้น</option>
+            <option value="2">2 ชิ้น</option>
+            <option value="3">3 ชิ้น</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="notes">
+            <span>📝 รายละเอียด / หมายเหตุเพิ่มเติม</span>
+          </label>
+          <input type="text" id="notes" placeholder="เช่น ความหนา 1.5 นิ้ว, เปลี่ยนฟอนต์คำว่า..." style="height: 100%;">
+        </div>
+      </div>
+
       <!-- Image Upload Area -->
       <div class="form-group">
         <label>
@@ -774,6 +992,61 @@
       </div>
     </div>
 
+  </div>
+
+  <!-- Image Editor Modal -->
+  <div class="editor-modal-backdrop" id="image-editor-modal">
+    <div class="editor-modal-content">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid #333; padding-bottom: 0.5rem;">
+        <h3 style="margin: 0; color: var(--accent-color); font-family: 'Outfit', sans-serif;">✏️ แก้ไขรูปภาพ (ครอปรูป / เขียนข้อความ)</h3>
+        <button type="button" onclick="closeImageEditor()" style="background: none; border: none; color: #aaa; font-size: 1.5rem; cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#aaa'">✕</button>
+      </div>
+      
+      <!-- Canvas Container -->
+      <div style="flex: 1; display: flex; justify-content: center; align-items: center; background: #09090b; border-radius: 8px; overflow: hidden; position: relative; min-height: 250px; max-height: 400px; margin-bottom: 1rem; border: 1px solid #27272a;">
+        <canvas id="editor-canvas" style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: crosshair;"></canvas>
+      </div>
+
+      <!-- Editor Controls -->
+      <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+        
+        <!-- Text Adding Tool -->
+        <div style="background: rgba(255,255,255,0.02); padding: 0.8rem; border-radius: 8px; border: 1px solid #27272a;">
+          <div style="font-size: 0.85rem; color: var(--accent-color); font-weight: 600; margin-bottom: 0.4rem;">✍️ เพิ่มข้อความลงบนภาพ (คลิกเลือกและลากย้ายตำแหน่งได้)</div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <input type="text" id="editor-text-input" placeholder="พิมพ์ข้อความที่นี่..." style="flex: 1; min-width: 150px; background: #27272a; border: 1px solid #3f3f46; border-radius: 6px; padding: 0.4rem 0.6rem; color: #fff; font-size: 0.85rem; outline: none;">
+            <input type="color" id="editor-text-color" value="#d4af37" style="width: 40px; height: 32px; border: none; padding: 0; background: none; cursor: pointer;">
+            <select id="editor-text-size" style="background: #27272a; border: 1px solid #3f3f46; border-radius: 6px; padding: 0.4rem; color: #fff; font-size: 0.85rem; outline: none;">
+              <option value="18">ขนาดเล็ก</option>
+              <option value="28" selected>ขนาดกลาง</option>
+              <option value="42">ขนาดใหญ่</option>
+              <option value="60">ขนาดใหญ่มาก</option>
+            </select>
+            <button type="button" onclick="addTextToCanvas()" style="background: var(--accent-color); border: none; color: #000; padding: 0.4rem 1rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all 0.2s;">ใส่ข้อความ</button>
+          </div>
+        </div>
+
+        <!-- Cropping Tool & Actions -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+          <div style="display: flex; gap: 0.5rem;">
+            <button type="button" id="btn-editor-crop" onclick="startCropping()" style="background: #2563eb; border: none; color: #fff; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: background 0.2s;">✂️ ลากคลุมแล้วกด ครอปภาพ</button>
+            <button type="button" id="btn-editor-reset" onclick="resetEditorImage()" style="background: #3f3f46; border: none; color: #fff; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: background 0.2s;">🔄 คืนค่ารูปเดิม</button>
+          </div>
+          <button type="button" onclick="saveEditorImage()" style="background: #059669; border: none; color: #fff; padding: 0.5rem 1.2rem; border-radius: 6px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: background 0.2s;">💾 บันทึกรูปภาพ</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Status Notification Popup -->
+  <div class="status-popup-backdrop" id="status-popup">
+    <div class="status-popup-content" id="status-popup-content">
+      <div class="status-popup-icon" id="status-popup-icon">✨</div>
+      <div class="status-popup-title" id="status-popup-title">ส่งข้อมูลสั่งตัดสำเร็จ!</div>
+      <div class="status-popup-desc" id="status-popup-desc">ได้รับข้อมูลของท่านเรียบร้อยแล้ว</div>
+      <button class="status-popup-btn" id="status-popup-btn" onclick="closeStatusPopup()">ตกลง</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
