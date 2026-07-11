@@ -126,25 +126,54 @@
     }
 
     function handleQuantityChange(qty) {
-      const val = parseInt(qty);
-      const group2 = document.getElementById('color-group-2');
-      const row2 = document.getElementById('color-row-2');
+      const val = parseInt(qty) || 1;
+
+      // Sizes fields
+      const sizeGroup2 = document.getElementById('size-group-2');
+      const sizeRow2 = document.getElementById('size-row-2');
+      const size2 = document.getElementById('size-2');
+      const size3 = document.getElementById('size-3');
+
+      // Colors fields
+      const colorGroup2 = document.getElementById('color-group-2');
+      const colorRow2 = document.getElementById('color-row-2');
       const color2 = document.getElementById('color-2');
       const color3 = document.getElementById('color-3');
 
       if (val === 1) {
-        if (group2) group2.style.display = 'none';
-        if (row2) row2.style.display = 'none';
+        // Sizes
+        if (sizeGroup2) sizeGroup2.style.display = 'none';
+        if (sizeRow2) sizeRow2.style.display = 'none';
+        if (size2) size2.required = false;
+        if (size3) size3.required = false;
+
+        // Colors
+        if (colorGroup2) colorGroup2.style.display = 'none';
+        if (colorRow2) colorRow2.style.display = 'none';
         if (color2) color2.required = false;
         if (color3) color3.required = false;
       } else if (val === 2) {
-        if (group2) group2.style.display = 'block';
-        if (row2) row2.style.display = 'none';
+        // Sizes
+        if (sizeGroup2) sizeGroup2.style.display = 'block';
+        if (sizeRow2) sizeRow2.style.display = 'none';
+        if (size2) size2.required = true;
+        if (size3) size3.required = false;
+
+        // Colors
+        if (colorGroup2) colorGroup2.style.display = 'block';
+        if (colorRow2) colorRow2.style.display = 'none';
         if (color2) color2.required = true;
         if (color3) color3.required = false;
       } else if (val === 3) {
-        if (group2) group2.style.display = 'block';
-        if (row2) row2.style.display = 'block';
+        // Sizes
+        if (sizeGroup2) sizeGroup2.style.display = 'block';
+        if (sizeRow2) sizeRow2.style.display = 'block';
+        if (size2) size2.required = true;
+        if (size3) size3.required = true;
+
+        // Colors
+        if (colorGroup2) colorGroup2.style.display = 'block';
+        if (colorRow2) colorRow2.style.display = 'block';
         if (color2) color2.required = true;
         if (color3) color3.required = true;
       }
@@ -194,6 +223,20 @@
         combinedColor = `ชิ้นที่ 1: ${c1}, ชิ้นที่ 2: ${c2}, ชิ้นที่ 3: ${c3}`;
       }
 
+      // Combine sizes dynamically based on quantity
+      let combinedSize = "";
+      const s1 = document.getElementById('size').value.trim();
+      if (qty === 1) {
+        combinedSize = s1;
+      } else if (qty === 2) {
+        const s2 = document.getElementById('size-2').value.trim();
+        combinedSize = `ชิ้นที่ 1: ${s1}, ชิ้นที่ 2: ${s2}`;
+      } else if (qty === 3) {
+        const s2 = document.getElementById('size-2').value.trim();
+        const s3 = document.getElementById('size-3').value.trim();
+        combinedSize = `ชิ้นที่ 1: ${s1}, ชิ้นที่ 2: ${s2}, ชิ้นที่ 3: ${s3}`;
+      }
+
       const ceremonyType = document.getElementById('ceremony-type').value;
       let finalGroomName = "";
       let finalBrideName = "";
@@ -232,7 +275,7 @@
         groomName: finalGroomName,
         brideName: finalBrideName,
         requiredDate: document.getElementById('required-date').value,
-        size: document.getElementById('size').value + " (จำนวน: " + qty + " ชิ้น)",
+        size: combinedSize + " (จำนวน: " + qty + " ชิ้น)",
         color: combinedColor,
         notes: finalNotes,
         images: uploadedImages
